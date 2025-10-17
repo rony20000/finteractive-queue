@@ -10,7 +10,7 @@ export const SkeletonLoader = React.memo(function SkeletonLoader({ count = 1, ty
   const shimmer = useMemo(() => ({
     initial: { backgroundPosition: '200% center' },
     animate: { backgroundPosition: '-200% center' },
-    transition: { duration: 2, repeat: Infinity, ease: 'linear' },
+    transition: { duration: 2, repeat: Infinity, ease: 'linear' as const },
   }), []);
 
   if (type === 'stat') {
