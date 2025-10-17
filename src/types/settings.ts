@@ -5,7 +5,6 @@ export interface Settings {
   theme: Theme;
   animationSpeed: AnimationSpeed;
   soundEnabled: boolean;
-  autoSave: boolean;
   showKeyboardHelp: boolean;
 }
 
@@ -19,7 +18,6 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'dark',
   animationSpeed: 'normal',
   soundEnabled: true,
-  autoSave: true,
   showKeyboardHelp: true,
 };
 

@@ -1,7 +1,8 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useCallback } from 'react';
 import { Task } from '../types/task';
 import { useTaskQueue } from '../hooks/useTaskQueue';
 import { useTaskProcessing } from '../hooks/useTaskProcessing';
+import { useSound } from '../hooks/useSound';
 
 interface TaskContextType {
   tasks: Task[];
@@ -30,7 +31,13 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     resetQueue,
   } = useTaskQueue();
 
-  useTaskProcessing(tasks, updateTask);
+  const { play } = useSound();
+
+  const handleTaskCompleted = useCallback(() => {
+    play('success');
+  }, [play]);
+
+  useTaskProcessing(tasks, updateTask, handleTaskCompleted);
 
   return (
     <TaskContext.Provider

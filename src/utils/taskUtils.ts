@@ -51,8 +51,9 @@ export const getCompletedTasks = (tasks: Task[]): Task[] => {
   return tasks.filter(t => t.status === 'completed');
 };
 
-export const formatDate = (date: Date): string => {
-  return date.toLocaleTimeString('en-US', {
+export const formatDate = (date: Date | string): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  return dateObj.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',

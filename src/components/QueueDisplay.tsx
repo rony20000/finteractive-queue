@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Task } from '../types/task';
 import { TaskCard } from './TaskCard';
+import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 import { AlertCircle } from 'lucide-react';
 
 interface QueueDisplayProps {
@@ -15,12 +16,14 @@ export const QueueDisplay: React.FC<QueueDisplayProps> = ({
   currentTask,
   onRemoveTask,
 }) => {
+  const { duration, delay } = useAnimationSpeed();
+
   if (tasks.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: duration(0.3) }}
         className="rounded-lg border border-slate-700 bg-slate-800 p-8 text-center"
       >
         <AlertCircle className="mx-auto h-12 w-12 text-slate-500" />
@@ -68,7 +71,7 @@ export const QueueDisplay: React.FC<QueueDisplayProps> = ({
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  transition={{ duration: duration(0.3), delay: delay(index * 0.05) }}
                 >
                   <TaskCard
                     task={task}

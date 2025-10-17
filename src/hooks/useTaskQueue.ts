@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Task } from '../types/task';
 import {
   createTask,
@@ -7,34 +7,35 @@ import {
   getCompletedTasks,
   getCurrentTask,
 } from '../utils/taskUtils';
+import { useLocalStorage } from './useLocalStorage';
 
 export const useTaskQueue = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useLocalStorage<Task[]>('finteractive_tasks', []);
 
   const addTask = useCallback((name: string, priority: number) => {
     const newTask = createTask(name, priority);
-    setTasks(prev => sortTasksByPriority([...prev, newTask]));
-  }, []);
+    setTasks(sortTasksByPriority([...tasks, newTask]));
+  }, [tasks, setTasks]);
 
   const updateTask = useCallback((id: string, updates: Partial<Task>) => {
-    setTasks(prev =>
+    setTasks(
       sortTasksByPriority(
-        prev.map(task => (task.id === id ? { ...task, ...updates } : task))
+        tasks.map(task => (task.id === id ? { ...task, ...updates } : task))
       )
     );
-  }, []);
+  }, [tasks, setTasks]);
 
   const removeTask = useCallback((id: string) => {
-    setTasks(prev => prev.filter(task => task.id !== id));
-  }, []);
+    setTasks(tasks.filter(task => task.id !== id));
+  }, [tasks, setTasks]);
 
   const clearCompleted = useCallback(() => {
-    setTasks(prev => prev.filter(task => task.status !== 'completed'));
-  }, []);
+    setTasks(tasks.filter(task => task.status !== 'completed'));
+  }, [tasks, setTasks]);
 
   const resetQueue = useCallback(() => {
     setTasks([]);
-  }, []);
+  }, [setTasks]);
 
   const activeTasks = getActiveTasks(tasks);
   const completedTasks = getCompletedTasks(tasks);

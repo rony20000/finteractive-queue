@@ -2,9 +2,11 @@ import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 
 export const ToastContainer = React.memo(function ToastContainer() {
   const { toasts, removeToast } = useToast();
+  const { duration } = useAnimationSpeed();
 
   const getIcon = useMemo(() => (type: string) => {
     switch (type) {
@@ -57,7 +59,7 @@ export const ToastContainer = React.memo(function ToastContainer() {
             initial={{ opacity: 0, y: 20, x: 100 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -20, x: 100 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: duration(0.3) }}
             className={`flex items-center gap-3 rounded-lg border px-4 py-3 backdrop-blur-sm ${getColors(toast.type)}`}
           >
             <div className={getIconColor(toast.type)}>{getIcon(toast.type)}</div>

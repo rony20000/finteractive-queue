@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, ListTodo, Zap } from 'lucide-react';
+import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 
 interface StatsPanelProps {
   totalTasks: number;
@@ -15,6 +16,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = React.memo(({
   completedTasks,
   currentProgress,
 }) => {
+  const { duration, delay } = useAnimationSpeed();
   const stats = useMemo(() => [
     {
       label: 'Total Tasks',
@@ -55,7 +57,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = React.memo(({
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
+            transition={{ duration: duration(0.3), delay: delay(index * 0.1) }}
             whileHover={{ scale: 1.05, y: -4 }}
             className={`rounded-lg border border-slate-700 ${stat.bgColor} p-6 transition-all duration-200 hover:shadow-lg hover:shadow-slate-900/50`}
           >
@@ -66,7 +68,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = React.memo(({
                   key={stat.value}
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: duration(0.3) }}
                   className={`mt-2 text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
                 >
                   {stat.value}

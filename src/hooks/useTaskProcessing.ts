@@ -8,7 +8,8 @@ const MAX_PROGRESS_INCREMENT = 20;
 
 export const useTaskProcessing = (
   tasks: Task[],
-  onTaskUpdate: (id: string, updates: Partial<Task>) => void
+  onTaskUpdate: (id: string, updates: Partial<Task>) => void,
+  onTaskCompleted?: () => void
 ) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -21,8 +22,13 @@ export const useTaskProcessing = (
       MIN_PROGRESS_INCREMENT;
 
     const updatedTask = updateTaskProgress(currentTask, increment);
+
+    if (updatedTask.status === 'completed' && onTaskCompleted) {
+      onTaskCompleted();
+    }
+
     onTaskUpdate(currentTask.id, updatedTask);
-  }, [tasks, onTaskUpdate]);
+  }, [tasks, onTaskUpdate, onTaskCompleted]);
 
   useEffect(() => {
     intervalRef.current = setInterval(processNextTask, PROCESSING_INTERVAL);

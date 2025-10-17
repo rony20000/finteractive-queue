@@ -4,6 +4,7 @@ import { Task } from '../types/task';
 import { getPriorityColor, getPriorityLabel } from '../types/task';
 import { formatDate } from '../utils/taskUtils';
 import { CheckCircle, Trash2 } from 'lucide-react';
+import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 
 interface CompletedTasksSectionProps {
   tasks: Task[];
@@ -16,6 +17,8 @@ export const CompletedTasksSection: React.FC<CompletedTasksSectionProps> = ({
   onClearAll,
   onRemoveTask,
 }) => {
+  const { duration, delay } = useAnimationSpeed();
+
   if (tasks.length === 0) {
     return null;
   }
@@ -24,7 +27,7 @@ export const CompletedTasksSection: React.FC<CompletedTasksSectionProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: duration(0.3) }}
       className="rounded-lg border border-slate-700 bg-slate-800 p-6"
     >
       <div className="mb-4 flex items-center justify-between">
@@ -55,7 +58,7 @@ export const CompletedTasksSection: React.FC<CompletedTasksSectionProps> = ({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
+              transition={{ duration: duration(0.3), delay: delay(index * 0.05) }}
               className="flex items-center justify-between rounded-lg border border-slate-700 bg-slate-900/50 p-3 transition-all hover:bg-slate-900"
             >
               <div className="flex-1">

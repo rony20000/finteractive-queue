@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { validateTaskName, validatePriority } from '../utils/taskUtils';
 import { Plus } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { useSound } from '../hooks/useSound';
 
 interface TaskFormProps {
   onAddTask: (name: string, priority: number) => void;
@@ -10,6 +11,7 @@ interface TaskFormProps {
 
 export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
   const { addToast } = useToast();
+  const { play } = useSound();
   const [name, setName] = useState('');
   const [priority, setPriority] = useState(5);
   const [errors, setErrors] = useState<{ name?: string; priority?: string }>({});
@@ -42,6 +44,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
       if (nameValid && priorityValid) {
         setIsSubmitting(true);
         onAddTask(name, priority);
+        play('success');
         addToast(`Task "${name}" added successfully!`, 'success');
         setName('');
         setPriority(5);
