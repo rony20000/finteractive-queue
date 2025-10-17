@@ -48,11 +48,6 @@ npm run build
 npx tsc --noEmit
 ```
 
-### Deployment
-```bash
-# Deploy to Netlify
-netlify deploy --prod --dir=dist
-```
 
 ---
 
